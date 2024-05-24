@@ -505,6 +505,17 @@ def build_image_impl(project, cache=True, pull=False, architecture='x86_64'):
   if not cache:
     build_args.append('--no-cache')
 
+
+  import subprocess
+
+  # Command to replace 'openthread/openthread' with 'LuDuda/openthread'
+  sed_command = f"sed -i 's|openthread/openthread|LuDuda/openthread|g' {dockerfile_path}"
+
+  # Execute the sed command using subprocess.run
+  result = subprocess.run(sed_command, shell=True, text=True, capture_output=True)
+
+  logging.info('LUDU CHANGE with dockerfile....');
+
   build_args += ['-t', image_name, '--file', dockerfile_path]
   build_args.append(docker_build_dir)
 

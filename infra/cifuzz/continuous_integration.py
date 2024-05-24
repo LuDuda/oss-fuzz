@@ -194,11 +194,11 @@ def checkout_specified_commit(repo_manager_obj, pr_ref, git_sha):
     if pr_ref:
       repo_manager_obj.checkout_pr(pr_ref)
     else:
-      repo_manager_obj.checkout_commit(git_sha)
+      repo_manager_obj.checkout_commit('837824e89bc2a06fb45e536c9f4f5c7246f14661')
   except (RuntimeError, ValueError):
     logging.error(
         'Can not check out requested state %s. '
-        'Using current repo state.', pr_ref or git_sha)
+        'Using current repo state.', pr_ref or '837824e89bc2a06fb45e536c9f4f5c7246f14661')
 
 
 class GithubCiMixin:
