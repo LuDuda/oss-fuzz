@@ -17,7 +17,7 @@
 FROM gcr.io/oss-fuzz-base/base-builder
 
 RUN apt-get update && apt-get install -y cmake ninja-build
-RUN git clone --depth 1 https://github.com/openthread/openthread
+RUN git clone --depth 1 https://github.com/LuDuda/openthread --branch pr/psa-mbedtls-3.6.0-fuzz2
 
 WORKDIR openthread
 COPY build.sh *.options $SRC/

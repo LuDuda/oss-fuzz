@@ -216,6 +216,10 @@ class RepoManager:
       ValueError: when commit does not exist.
     """
     self.fetch_unshallow()
+
+    self.git(['remote', 'add', 'LuDuda', 'https://github.com/LuDuda/openthread.git'], result=True)
+    self.git(['fetch', 'LuDuda'], result=True)
+
     if not self.commit_exists(commit):
       raise ValueError('Commit %s does not exist in current branch' % commit)
     self.git(['checkout', '-f', commit], check_result=True)

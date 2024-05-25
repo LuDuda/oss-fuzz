@@ -502,8 +502,25 @@ def build_image_impl(project, cache=True, pull=False, architecture='x86_64'):
         'plain',
         '--load',
     ]
-  if not cache:
-    build_args.append('--no-cache')
+
+  build_args.append('--no-cache')
+
+  import subprocess
+
+  # Get the directory of the Dockerfile
+  dockerfile_dir = os.path.dirname(dockerfile_path)
+
+  # Construct the path to the other file in the same directory
+  file_project = os.path.join(dockerfile_dir, 'project.yaml')
+
+
+  # Command to replace 'openthread/openthread' with 'LuDuda/openthread'
+  sed_command = f"sed -i 's|openthread/openthread|LuDuda/openthread --branch pr/psa-mbedtls-3.6.0-fuzz2|g' {dockerfile_path}"
+  sed_command2 = f"sed -i 's|openthread/openthread|LuDuda/openthread|g' {file_project}"
+
+  # Execute the sed command using subprocess.run
+  subprocess.run(sed_command, shell=True, text=True, capture_output=True)
+  subprocess.run(sed_command2, shell=True, text=True, capture_output=True)
 
   build_args += ['-t', image_name, '--file', dockerfile_path]
   build_args.append(docker_build_dir)

@@ -190,16 +190,16 @@ def get_ci(config):
 def checkout_specified_commit(repo_manager_obj, pr_ref, git_sha):
   """Checks out the specified commit or pull request using
   |repo_manager_obj|."""
-  try:
-    if pr_ref:
-      repo_manager_obj.checkout_pr(pr_ref)
-    else:
-      repo_manager_obj.checkout_commit(git_sha)
-  except (RuntimeError, ValueError):
-    logging.error(
-        'Can not check out requested state %s. '
-        'Using current repo state.', pr_ref or git_sha)
-
+  # try:
+  #   if pr_ref:
+  #     repo_manager_obj.checkout_pr(pr_ref)
+  #   else:
+  #     repo_manager_obj.checkout_commit(git_sha)
+  # except (RuntimeError, ValueError):
+  #   logging.error(
+  #       'Can not check out requested state %s. '
+  #       'Using current repo state.', pr_ref or git_sha)
+  pass
 
 class GithubCiMixin:
   """Mixin for Github based CI systems."""
@@ -237,7 +237,7 @@ class InternalGithub(GithubCiMixin, BaseCi):
     self._make_repo_storage_dir()
     repo_name = os.path.basename(image_repo_path)
     host_repo_path = os.path.join(self._repo_dir, repo_name)
-    bash_command = f'cp -r {image_repo_path} {host_repo_path}'
+    bash_command = f'cp -r {image_repo_path} {host_repo_path} && cd {host_repo_path} && git status && git log -2 && git remote add LD https://github.com/LuDuda/openthread && git fetch LD && git checkout LD/pr/psa-mbedtls-3.6.0-fuzz2'
     docker_args, _ = docker.get_base_docker_run_args(
         self.workspace, self.config.sanitizer, self.config.language,
         self.config.architecture, self.config.docker_in_docker)
